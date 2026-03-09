@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Gaming Boost</title>
+
+<style>
+body{
+background:black;
+color:white;
+font-family:Arial;
+text-align:center;
+margin-top:120px;
+}
+
+button{
+font-size:30px;
+padding:20px 40px;
+border:none;
+border-radius:12px;
+background:red;
+color:white;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>Gaming Boost</h1>
+
+<button onclick="toggle()" id="btn">OFF</button>
+
+<script>
+
+let on=false;
+
+function toggle(){
+on=!on;
+
+let btn=document.getElementById("btn");
+
+if(on){
+btn.innerText="ON";
+btn.style.background="green";
+}else{
+btn.innerText="OFF";
+btn.style.background="red";
+}
+
+}
+
+</script>
+
+</body>
+</html>
