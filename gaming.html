@@ -1,66 +1,112 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-<meta charset="UTF-8">
-<title>Menu Tool</title>
+  <meta charset="UTF-8">
+  <title>Chạy Ứng Dụng</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
 
-<style>
-body{
-background:#111;
-font-family:Arial;
-color:white;
-text-align:center;
-}
+    .box {
+      background: white;
+      padding: 25px;
+      border-radius: 20px;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
 
-.menu{
-width:260px;
-margin:auto;
-padding:20px;
-background:#222;
-border-radius:10px;
-}
+    h2 {
+      margin-bottom: 15px;
+    }
 
-button{
-width:100%;
-padding:10px;
-margin:6px;
-background:#00ffc8;
-border:none;
-border-radius:6px;
-cursor:pointer;
-}
-</style>
+    input[type="file"] {
+      margin: 10px 0;
+    }
 
+    .file-name {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      background: #4facfe;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #007bff;
+    }
+
+    .success {
+      margin-top: 15px;
+      color: green;
+      font-weight: bold;
+      display: none;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="menu">
+<div class="box">
+  <h2>Chạy Ứng Dụng</h2>
 
-<h2>MENU TOOL</h2>
+  <input type="file" id="fileInput">
 
-<button onclick="runScript()">Chạy Script</button>
+  <div class="file-name" id="fileName">Chưa chọn tệp</div>
 
-<button onclick="runFile()">Chạy File</button>
+  <button onclick="runApp()">🚀 Chạy ứng dụng</button>
 
-<button onclick="downloadFile()">Tải File</button>
+  <button onclick="runFF()">🎮 Chạy FF MAX</button>
 
+  <div class="success" id="successMsg">✔ Đã chạy thành công!</div>
 </div>
 
 <script>
+  const fileInput = document.getElementById("fileInput");
+  const fileName = document.getElementById("fileName");
+  const successMsg = document.getElementById("successMsg");
 
-function runScript(){
-alert("Script đang chạy");
-}
+  fileInput.addEventListener("change", function() {
+    if (this.files.length > 0) {
+      fileName.innerText = "📄 " + this.files[0].name;
+    }
+  });
 
-function runFile(){
-window.open("https://example.com/tool.html");
-}
+  function runApp() {
+    if (fileInput.files.length === 0) {
+      alert("Vui lòng chọn tệp trước!");
+      return;
+    }
 
-function downloadFile(){
-window.location="https://example.com/file.zip";
-}
+    successMsg.style.display = "block";
+    successMsg.innerText = "✔ Đã chạy tệp thành công!";
+  }
 
+  function runFF() {
+    successMsg.style.display = "block";
+    successMsg.innerText = "🎮 Đang mở Free Fire MAX...";
+    
+    setTimeout(() => {
+      successMsg.innerText = "❌ Không thể mở game từ web!";
+    }, 2000);
+  }
 </script>
 
 </body>
