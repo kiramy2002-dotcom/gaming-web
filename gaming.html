@@ -1,113 +1,220 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Chạy Ứng Dụng</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #4facfe, #00f2fe);
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Touch 1080 Ultra</title>
 
-    .box {
-      background: white;
-      padding: 25px;
-      border-radius: 20px;
-      width: 320px;
-      text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: linear-gradient(135deg, #0f0f1a, #1a1a2e);
+    color: white;
+    text-align: center;
+}
 
-    h2 {
-      margin-bottom: 15px;
-    }
+h1 {
+    padding: 15px;
+}
 
-    input[type="file"] {
-      margin: 10px 0;
-    }
+.card {
+    background: rgba(255,255,255,0.05);
+    margin: 15px auto;
+    padding: 20px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 0 20px rgba(0,255,255,0.2);
+}
 
-    .file-name {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #333;
-    }
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #00c3ff;
+    color: white;
+    cursor: pointer;
+}
 
-    button {
-      margin-top: 15px;
-      padding: 10px;
-      width: 100%;
-      border: none;
-      border-radius: 10px;
-      background: #4facfe;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+button.active {
+    background: #00ff9d;
+}
 
-    button:hover {
-      background: #007bff;
-    }
+button.locked {
+    background: #ff3b3b;
+}
 
-    .success {
-      margin-top: 15px;
-      color: green;
-      font-weight: bold;
-      display: none;
-    }
-  </style>
+.status {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #aaa;
+}
+
+.slider {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.value {
+    margin-top: 5px;
+    color: #00ffcc;
+}
+</style>
 </head>
+
 <body>
 
-<div class="box">
-  <h2>Chạy Ứng Dụng</h2>
+<h1>Body Amindrum </h1>
 
-  <input type="file" id="fileInput">
-
-  <div class="file-name" id="fileName">Chưa chọn tệp</div>
-
-  <button onclick="runApp()">🚀 Chạy ứng dụng</button>
-
-  <button onclick="runFF()">🎮 Chạy FF MAX</button>
-
-  <div class="success" id="successMsg">✔ Đã chạy thành công!</div>
+<!-- LOCK -->
+<div class="card">
+    <h2>🔒 LOCK</h2>
+    <p>Khóa toàn bộ cấu hình</p>
+    <button onclick="toggleLock()" id="lockBtn">Khóa</button>
+    <div class="status" id="lock-status">Đang mở</div>
 </div>
 
+<!-- DEKM -->
+<div class="card">
+    <h2>DEKM</h2>
+    <button onclick="toggle('dekm')">Bật</button>
+    <div class="status" id="dekm-status">Chưa kích hoạt</div>
+</div>
+
+<!-- School -->
+<div class="card">
+    <h2>School</h2>
+    <button onclick="toggle('school')">Bật</button>
+    <div class="status" id="school-status">Chưa kích hoạt</div>
+</div>
+
+<!-- Continue -->
+<div class="card">
+    <h2>Continue</h2>
+    <button onclick="toggle('continue')">Bật</button>
+    <div class="status" id="continue-status">Chưa kích hoạt</div>
+</div>
+
+<!-- FPS -->
+<div class="card">
+    <h2>FPS</h2>
+    <input type="range" min="30" max="120" value="60" id="fps" class="slider">
+    <div class="value" id="fps-value">60 FPS</div>
+</div>
+
+<!-- Sens -->
+<div class="card">
+    <h2>Độ nhạy</h2>
+    <input type="range" min="1" max="200" value="100" id="sens" class="slider">
+    <div class="value" id="sens-value">100%</div>
+</div>
+
+<audio id="on" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+<audio id="off" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
+
 <script>
-  const fileInput = document.getElementById("fileInput");
-  const fileName = document.getElementById("fileName");
-  const successMsg = document.getElementById("successMsg");
+let isLocked = false;
+aimlock = true;
+// LOCK
+function toggleLock() {
+    let btn = document.getElementById("lockBtn");
+    let status = document.getElementById("lock-status");
 
-  fileInput.addEventListener("change", function() {
-    if (this.files.length > 0) {
-      fileName.innerText = "📄 " + this.files[0].name;
+    isLocked = !isLocked;
+
+    if (isLocked) {
+        btn.innerText = "Mở khóa";
+        btn.classList.add("locked");
+        status.innerText = "Đã khóa";
+        navigator.vibrate(100);
+        localStorage.setItem("lock", "on");
+    } else {
+        btn.innerText = "Khóa";
+        btn.classList.remove("locked");
+        status.innerText = "Đang mở";
+        localStorage.setItem("lock", "off");
     }
-  });
 
-  function runApp() {
-    if (fileInput.files.length === 0) {
-      alert("Vui lòng chọn tệp trước!");
-      return;
+    updateLockState();
+}
+
+// khóa UI
+function updateLockState() {
+    document.querySelectorAll("button:not(#lockBtn), input").forEach(el => {
+        el.disabled = isLocked;
+    });
+}
+
+// toggle
+function toggle(name) {
+    if (isLocked) return;
+
+    let btn = event.target;
+    let status = document.getElementById(name + "-status");
+
+    if (btn.classList.contains("active")) {
+        btn.classList.remove("active");
+        btn.innerText = "Bật";
+        status.innerText = "Đã tắt";
+        off.play();
+        localStorage.setItem(name, "off");
+    } else {
+        btn.classList.add("active");
+        btn.innerText = "Tắt";
+        status.innerText = "Đã bật";
+        on.play();
+        localStorage.setItem(name, "on");
+
+        if (name === "continue" && navigator.vibrate) {
+            navigator.vibrate(80);
+        }
+    }
+}
+
+// sliders
+fps.oninput = () => {
+    if (isLocked) return;
+    fpsValue.innerText = fps.value + " FPS";
+    localStorage.setItem("fps", fps.value);
+};
+
+sens.oninput = () => {
+    if (isLocked) return;
+    sensValue.innerText = sens.value + "%";
+    localStorage.setItem("sens", sens.value);
+};
+
+// load
+window.onload = function() {
+    isLocked = localStorage.getItem("lock") === "on";
+    if (isLocked) toggleLock();
+
+    ["dekm","school","continue"].forEach(name => {
+        let state = localStorage.getItem(name);
+        let btn = document.querySelector(`button[onclick="toggle('${name}')"]`);
+        let status = document.getElementById(name + "-status");
+
+        if (state === "on") {
+            btn.classList.add("active");
+            btn.innerText = "Tắt";
+            status.innerText = "Đã bật";
+        }
+    });
+
+    if(localStorage.getItem("fps")){
+        fps.value = localStorage.getItem("fps");
+        fpsValue.innerText = fps.value + " FPS";
     }
 
-    successMsg.style.display = "block";
-    successMsg.innerText = "✔ Đã chạy tệp thành công!";
-  }
+    if(localStorage.getItem("sens")){
+        sens.value = localStorage.getItem("sens");
+        sensValue.innerText = sens.value + "%";
+    }
 
-  function runFF() {
-    successMsg.style.display = "block";
-    successMsg.innerText = "🎮 Đang mở Free Fire MAX...";
-    
-    setTimeout(() => {
-      successMsg.innerText = "❌ Không thể mở game từ web!";
-    }, 2000);
-  }
+    updateLockState();
+}
 </script>
 
 </body>
-</html>
+  </html>
