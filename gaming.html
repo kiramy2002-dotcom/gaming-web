@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Touch Tool VIP</title>
+<title> VIP</title>
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 
@@ -159,7 +159,7 @@ h2{
 
 <!-- LOCK -->
 <div id="lockScreen">
-  <h3>🔒 VIP ACCESS</h3>
+  <h3>🔒 VIP </h3>
   <input id="keyInput" placeholder="Enter key...">
   <button onclick="unlock()">UNLOCK</button>
   <p id="lockStatus"></p>
@@ -294,5 +294,207 @@ swipe.LockHead();
 
 </script>
 
-</body>
-        </html>
+<script>
+using System;
+
+// Define the Player class
+public class Player
+{
+    private float x; // Player's x-coordinate
+    private float y; // Player's y-coordinate
+
+    // Constructor
+    public Player(float x, float y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+
+    // Method to get player's position
+    public Tuple<float, float> GetPosition()
+    {
+        return Tuple.Create(x, y);
+    }
+}
+
+// Define the Enemy class
+public class Enemy
+{
+    private float x; // Enemy's x-coordinate
+    private float y; // Enemy's y-coordinate
+
+    // Constructor
+    public Enemy(float x, float y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+
+    // Method to get enemy's position
+    public Tuple<float, float> GetPosition()
+    {
+        return Tuple.Create(x, y);
+    }
+}
+
+// Define the Aimbot class
+public class Aimbot
+{
+    private float strength; // Strength of the aimbot (0 to 1)
+
+    // Constructor
+    public Aimbot(float strength)
+    {
+        this.strength = strength;
+    }
+
+    // Method to aim at the enemy with a given strength
+    public void AimAtEnemy(Player player, Enemy enemy)
+    {
+        // Get player's and enemy's positions
+        var (playerX, playerY) = player.GetPosition();
+        var (enemyX, enemyY) = enemy.GetPosition();
+
+        // Calculate the angle between player and enemy
+        float angle = (float)Math.Atan2(enemyY - playerY, enemyX - playerX);
+
+        // Adjust the aim with the strength
+        float adjustedAngle = angle + strength * (new Random().Next(101)) / 100.0f;
+
+        // Output the aimed angle
+        Console.WriteLine("Aim adjusted to angle: " + adjustedAngle);
+    }
+}
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        // Create a player and an enemy
+        Player player = new Player(10.0f, 20.0f);
+        Enemy enemy = new Enemy(30.0f, 15.0f);
+
+        // Create an aimbot with 70% strength
+        Aimbot aimbot = new Aimbot(0.7f);
+
+        // Aim at the enemy with the aimbot
+        aimbot.AimAtEnemy(player, enemy);
+    }
+}
+</script>
+<script>
+    using System;
+
+public class SuperStickHead
+{
+    private bool stickHeadEnabled;
+    private double stickAccuracy;
+    private double stickDistanceThreshold;
+    private double headSpeedMultiplier;
+
+    public SuperStickHead()
+    {
+        stickHeadEnabled = false;
+        stickAccuracy = 0.95; // 95% stick accuracy for head
+        stickDistanceThreshold = 50; // Distance threshold to stick head to target
+        headSpeedMultiplier = 0.3; // Multiplier to reduce head movement speed when sticked
+    }
+
+    // Method to enable super stick head
+    public void EnableSuperStickHead()
+    {
+        stickHeadEnabled = true;
+        Console.WriteLine("Super stick head enabled. Head movement restricted to target.");
+    }
+
+    // Method to disable super stick head
+    public void DisableSuperStickHead()
+    {
+        stickHeadEnabled = false;
+        Console.WriteLine("Super stick head disabled. Normal head movement restored.");
+    }
+
+    // Method to simulate super stick head
+    public void StickHeadToTarget(int targetX, int targetY, int mouseX, int mouseY, out int adjustedMouseX, out int adjustedMouseY)
+    {
+        if (stickHeadEnabled)
+        {
+            // Calculate distance to target
+            double distance = Math.Sqrt(Math.Pow(targetX - mouseX, 2) + Math.Pow(targetY - mouseY, 2));
+
+            if (distance <= stickDistanceThreshold)
+            {
+                // Stick head to target
+                Console.WriteLine("Head stuck to target.");
+
+                // Simulate reduced head movement speed
+                adjustedMouseX = (int)(mouseX * headSpeedMultiplier);
+                adjustedMouseY = (int)(mouseY * headSpeedMultiplier);
+            }
+            else
+            {
+                adjustedMouseX = mouseX;
+                adjustedMouseY = mouseY;
+            }
+        }
+        else
+        {
+            adjustedMouseX = mouseX;
+            adjustedMouseY = mouseY;
+        }
+    }
+
+    // Method to set custom stick accuracy
+    public void SetStickAccuracy(double accuracy)
+    {
+        stickAccuracy = accuracy;
+        Console.WriteLine($"Stick accuracy set to {accuracy * 100}%.");
+    }
+
+    // Method to set custom stick distance threshold
+    public void SetStickDistanceThreshold(double threshold)
+    {
+        stickDistanceThreshold = threshold;
+        Console.WriteLine($"Stick distance threshold set to {threshold}.");
+    }
+
+    // Method to set custom head movement speed multiplier
+    public void SetHeadSpeedMultiplier(double multiplier)
+    {
+        headSpeedMultiplier = multiplier;
+        Console.WriteLine($"Head movement speed multiplier set to {multiplier}.");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        SuperStickHead superStickHead = new SuperStickHead();
+        superStickHead.EnableSuperStickHead();
+
+        // Simulate mouse movement and target position
+        int mouseX = 100; // Example mouse X position
+        int mouseY = 150; // Example mouse Y position
+        int targetX = 120; // Example target X position
+        int targetY = 140; // Example target Y position
+
+        superStickHead.StickHeadToTarget(targetX, targetY, mouseX, mouseY, out int adjustedMouseX, out int adjustedMouseY);
+
+        Console.WriteLine($"Adjusted mouse position: ({adjustedMouseX}, {adjustedMouseY})");
+
+        // Set custom stick accuracy
+        superStickHead.SetStickAccuracy(0.98);
+
+        // Set custom stick distance threshold
+        superStickHead.SetStickDistanceThreshold(60);
+
+        // Set custom head movement speed multiplier
+        superStickHead.SetHeadSpeedMultiplier(0.2);
+
+        superStickHead.DisableSuperStickHead();
+    }
+}
+</script>
+<body>
+</html>
