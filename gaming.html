@@ -3,218 +3,296 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bodyguard</title>
+
+<title>Touch Tool VIP</title>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial;
-    background: linear-gradient(135deg, #0f0f1a, #1a1a2e);
-    color: white;
-    text-align: center;
+body{
+  margin:0;
+  font-family: Arial;
+  color:white;
+
+  /* 🌈 nền đẹp */
+  background: linear-gradient(180deg,#050505,#0a0a0a,#050505);
+
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
 }
 
-h1 {
-    padding: 15px;
+/* HEADER */
+h2{
+  text-align:center;
+  margin:20px 0;
+  font-size:22px;
+  letter-spacing:1px;
 }
 
-.card {
-    background: rgba(255,255,255,0.05);
-    margin: 15px auto;
-    padding: 20px;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 400px;
-    box-shadow: 0 0 20px rgba(0,255,255,0.2);
+/* CARD GLASS */
+.box{
+  margin:15px;
+  padding:18px;
+  border-radius:18px;
+
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+
+  border:1px solid rgba(0,255,0,0.2);
+  box-shadow:0 0 20px rgba(0,255,0,0.1);
 }
 
-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 10px;
-    background: #00c3ff;
-    color: white;
-    cursor: pointer;
+/* TITLE */
+.box h3{
+  margin:0 0 10px 0;
+  font-size:16px;
+  color:#0f0;
 }
 
-button.active {
-    background: #00ff9d;
+/* BUTTON VIP */
+.btn{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+
+  background:#ff2b2b;
+  color:white;
+  font-weight:bold;
+  font-size:14px;
+
+  transition:0.2s;
 }
 
-button.locked {
-    background: #ff3b3b;
+.btn.on{
+  background:#00ff66;
+  color:black;
+  box-shadow:0 0 15px #00ff66;
 }
 
-.status {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #aaa;
+.btn:active{
+  transform:scale(0.95);
 }
 
-.slider {
-    width: 100%;
-    margin-top: 10px;
+/* FPS BUTTON */
+.fps-btn{
+  margin:5px;
+  padding:10px 14px;
+  border-radius:10px;
+
+  background:rgba(255,255,255,0.05);
+  color:#0f0;
+
+  border:1px solid rgba(0,255,0,0.3);
 }
 
-.value {
-    margin-top: 5px;
-    color: #00ffcc;
+/* STATUS */
+#status{
+  text-align:center;
+  margin:20px;
+  color:#aaa;
+  font-size:13px;
+}
+
+/* LOCK SCREEN */
+#lockScreen{
+  position:fixed;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+
+  background:black;
+}
+
+#lockScreen input{
+  padding:12px;
+  border-radius:10px;
+  border:none;
+  width:70%;
+  margin-bottom:10px;
+}
+
+#lockScreen button{
+  padding:10px 20px;
+  border:none;
+  border-radius:10px;
+  background:#0f0;
+  font-weight:bold;
+}
+
+/* LOADING */
+#loading{
+  position:fixed;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+
+  background:black;
+}
+
+.loader{
+  width:45px;
+  height:45px;
+  border:4px solid #0f0;
+  border-top:4px solid transparent;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg);}
 }
 </style>
 </head>
 
 <body>
 
-<h1>Body Amindrum </h1>
+<!-- LOADING -->
+<div id="loading">
+  <div class="loader"></div>
+  <p>Loading VIP Tool...</p>
+</div>
 
 <!-- LOCK -->
-<div class="card">
-    <h2>🔒 LOCK</h2>
-    <p>Khóa toàn bộ cấu hình</p>
-    <button onclick="toggleLock()" id="lockBtn">Khóa</button>
-    <div class="status" id="lock-status">Đang mở</div>
+<div id="lockScreen">
+  <h3>🔒 VIP ACCESS</h3>
+  <input id="keyInput" placeholder="Enter key...">
+  <button onclick="unlock()">UNLOCK</button>
+  <p id="lockStatus"></p>
 </div>
 
-<!-- DEKM -->
-<div class="card">
-    <h2>DEKM</h2>
-    <button onclick="toggle('dekm')">Bật</button>
-    <div class="status" id="dekm-status">Chưa kích hoạt</div>
+<!-- APP -->
+<div id="app" style="display:none;">
+  <h2>⚡ TOUCH TOOL VIP</h2>
+
+  <div class="box">
+    <h3>Body</h3>
+    <button class="btn" onclick="toggle('smooth',this)">OFF</button>
+  </div>
+
+  <div class="box">
+    <h3>lock</h3>
+    <button class="btn" onclick="toggle('swipe',this)">OFF</button>
+  </div>
+
+  <div class="box">
+    <h3>Nhạy</h3>
+    <button class="btn" onclick="toggle('accuracy',this)">OFF</button>
+  </div>
+  <script>
+  let lockHead = 90000000000;
+let lock = 100;
+let aimLock = 100;
+let screen = 100;
+let Claw = 100;
+let swipe right = 100;
+let swipe up = 100;
+let mind lock = 100;
+</script>
+  <div class="box">
+    <h3>Bám</h3>
+    <button class="btn" onclick="toggle('speed',this)">OFF</button>
+  </div>
+
+  <div class="box">
+    <h3>FPS </h3>
+    <button class="fps-btn" onclick="setFPS(60)">60</button>
+    <button class="fps-btn" onclick="setFPS(90)">90</button>
+    <button class="fps-btn" onclick="setFPS(120)">120</button>
+  </div>
+
+  <p id="status">Status: OFF</p>
 </div>
 
-<!-- School -->
-<div class="card">
-    <h2>School</h2>
-    <button onclick="toggle('school')">Bật</button>
-    <div class="status" id="school-status">Chưa kích hoạt</div>
-</div>
-
-<!-- Continue -->
-<div class="card">
-    <h2>Continue</h2>
-    <button onclick="toggle('continue')">Bật</button>
-    <div class="status" id="continue-status">Chưa kích hoạt</div>
-</div>
-
-<!-- FPS -->
-<div class="card">
-    <h2>FPS</h2>
-    <input type="range" min="30" max="120" value="60" id="fps" class="slider">
-    <div class="value" id="fps-value">60 FPS</div>
-</div>
-
-<!-- Sens -->
-<div class="card">
-    <h2>Độ nhạy</h2>
-    <input type="range" min="1" max="200" value="100" id="sens" class="slider">
-    <div class="value" id="sens-value">100%</div>
-</div>
-
-<audio id="on" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
-<audio id="off" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
+<!-- SOUND -->
+<audio id="clickSound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+<audio id="unlockSound" src="https://www.soundjay.com/buttons/sounds/button-09.mp3"></audio>
 
 <script>
-let isLocked = false;
-aimlock = true;
-// LOCK
-function toggleLock() {
-    let btn = document.getElementById("lockBtn");
-    let status = document.getElementById("lock-status");
+let validKey="123";
 
-    isLocked = !isLocked;
-
-    if (isLocked) {
-        btn.innerText = "Mở khóa";
-        btn.classList.add("locked");
-        status.innerText = "Đã khóa";
-        navigator.vibrate(100);
-        localStorage.setItem("lock", "on");
-    } else {
-        btn.innerText = "Khóa";
-        btn.classList.remove("locked");
-        status.innerText = "Đang mở";
-        localStorage.setItem("lock", "off");
-    }
-
-    updateLockState();
-}
-
-// khóa UI
-function updateLockState() {
-    document.querySelectorAll("button:not(#lockBtn), input").forEach(el => {
-        el.disabled = isLocked;
-    });
-}
-
-// toggle
-function toggle(name) {
-    if (isLocked) return;
-
-    let btn = event.target;
-    let status = document.getElementById(name + "-status");
-
-    if (btn.classList.contains("active")) {
-        btn.classList.remove("active");
-        btn.innerText = "Bật";
-        status.innerText = "Đã tắt";
-        off.play();
-        localStorage.setItem(name, "off");
-    } else {
-        btn.classList.add("active");
-        btn.innerText = "Tắt";
-        status.innerText = "Đã bật";
-        on.play();
-        localStorage.setItem(name, "on");
-
-        if (name === "continue" && navigator.vibrate) {
-            navigator.vibrate(80);
-        }
-    }
-}
-
-// sliders
-fps.oninput = () => {
-    if (isLocked) return;
-    fpsValue.innerText = fps.value + " FPS";
-    localStorage.setItem("fps", fps.value);
+let state={
+ smooth:true,
+ swipe:true,
+ accuracy:true,
+ speed:true
 };
 
-sens.oninput = () => {
-    if (isLocked) return;
-    sensValue.innerText = sens.value + "%";
-    localStorage.setItem("sens", sens.value);
-};
-
-// load
-window.onload = function() {
-    isLocked = localStorage.getItem("lock") === "on";
-    if (isLocked) toggleLock();
-
-    ["dekm","school","continue"].forEach(name => {
-        let state = localStorage.getItem(name);
-        let btn = document.querySelector(`button[onclick="toggle('${name}')"]`);
-        let status = document.getElementById(name + "-status");
-
-        if (state === "on") {
-            btn.classList.add("active");
-            btn.innerText = "Tắt";
-            status.innerText = "Đã bật";
-        }
-    });
-
-    if(localStorage.getItem("fps")){
-        fps.value = localStorage.getItem("fps");
-        fpsValue.innerText = fps.value + " FPS";
-    }
-
-    if(localStorage.getItem("sens")){
-        sens.value = localStorage.getItem("sens");
-        sensValue.innerText = sens.value + "%";
-    }
-
-    updateLockState();
+// SOUND
+function clickSound(){
+  let a=document.getElementById("clickSound");
+  a.currentTime=0;
+  a.play().catch(()=>{});
 }
+
+function unlockSound(){
+  let a=document.getElementById("unlockSound");
+  a.currentTime=0;
+  a.play().catch(()=>{});
+}
+
+// LOADING
+setTimeout(()=>{
+  document.getElementById("loading").style.display="none";
+  document.getElementById("lockScreen").style.display="flex";
+},1500);
+
+// UNLOCK
+function unlock(){
+  let input=document.getElementById("keyInput").value;
+
+  if(input===validKey){
+    unlockSound();
+    document.getElementById("lockScreen").style.display="none";
+    document.getElementById("app").style.display="block";
+  }else{
+    document.getElementById("lockStatus").innerText="❌ Sai key";
+    clickSound();
+  }
+}
+
+// TOGGLE
+function toggle(type,btn){
+  state[type]=!state[type];
+
+  if(state[type]){
+    btn.innerText="ON";
+    btn.classList.add("on");
+  }else{
+    btn.innerText="OFF";
+    btn.classList.remove("on");
+  }
+
+  clickSound();
+  updateStatus();
+  LockHead();
+  Aimfor();
+}
+
+// FPS
+function setFPS(fps){
+  document.getElementById("status").innerText="FPS: "+fps;
+  clickSound();
+  LockHead();
+  LockHead = 9000;
+}
+
+// STATUS
+function updateStatus(){
+  document.getElementById("status").innerText=
+  "Smooth:"+state.smooth+
+  " | Swipe:"+state.swipe+
+  " | Accuracy:"+state.accuracy+
+  " | Speed:"+state.speed;
+}
+
+swipe.LockHead();
+
 </script>
 
 </body>
-  </html>
+        </html>
