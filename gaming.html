@@ -1,500 +1,200 @@
-<!DOCTYPE html>
-<html lang="vi">
+<!DOCTYPE html><html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title> VIP</title>
-
-<meta name="apple-mobile-web-app-capable" content="yes">
-
-<style>
+<title>TOUCH TOOL VIP</title><style>
 body{
   margin:0;
-  font-family: Arial;
-  color:white;
-
-  /* 🌈 nền đẹp */
-  background: linear-gradient(180deg,#050505,#0a0a0a,#050505);
-
-  overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(180deg,#050505,#0a0a0a,#050505);
+  color:#fff;
 }
 
-/* HEADER */
 h2{
   text-align:center;
   margin:20px 0;
-  font-size:22px;
-  letter-spacing:1px;
 }
 
-/* CARD GLASS */
 .box{
   margin:15px;
   padding:18px;
   border-radius:18px;
-
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(10px);
-
+  background:rgba(0,255,100,0.06); box-shadow:0 0 50px rgba(0,255,100,0.18), inset 0 0 25px rgba(0,255,100,0.08);
   border:1px solid rgba(0,255,0,0.2);
-  box-shadow:0 0 20px rgba(0,255,0,0.1);
+  box-shadow:0 0 15px rgba(0,255,0,0.1);
 }
 
-/* TITLE */
 .box h3{
-  margin:0 0 10px 0;
-  font-size:16px;
-  color:#0f0;
+  margin:0 0 10px;
+  color:#00ff66;
 }
 
-/* BUTTON VIP */
-.btn{
+.btn,.fps-btn{
   width:100%;
   padding:12px;
   border:none;
   border-radius:12px;
-
-  background:#ff2b2b;
-  color:white;
   font-weight:bold;
-  font-size:14px;
+  cursor:pointer;
+}
 
-  transition:0.2s;
+.btn{
+  background:#ff2b2b;
+  color:#fff;
 }
 
 .btn.on{
   background:#00ff66;
-  color:black;
+  color:#000;
   box-shadow:0 0 15px #00ff66;
 }
 
-.btn:active{
-  transform:scale(0.95);
+.fps-row{
+  display:flex;
+  gap:10px;
 }
 
-/* FPS BUTTON */
 .fps-btn{
-  margin:5px;
-  padding:10px 14px;
-  border-radius:10px;
-
-  background:rgba(255,255,255,0.05);
-  color:#0f0;
-
+  background:#111;
+  color:#00ff66;
   border:1px solid rgba(0,255,0,0.3);
 }
 
-/* STATUS */
 #status{
   text-align:center;
   margin:20px;
-  color:#aaa;
-  font-size:13px;
+  color:#bbb;
+  font-size:14px;
 }
-
-/* LOCK SCREEN */
-#lockScreen{
-  position:fixed;
-  inset:0;
-  display:none;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-
-  background:black;
-}
-
-#lockScreen input{
-  padding:12px;
-  border-radius:10px;
-  border:none;
-  width:70%;
-  margin-bottom:10px;
-}
-
-#lockScreen button{
-  padding:10px 20px;
-  border:none;
-  border-radius:10px;
-  background:#0f0;
-  font-weight:bold;
-}
-
-/* LOADING */
-#loading{
-  position:fixed;
-  inset:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-
-  background:black;
-}
-
-.loader{
-  width:45px;
-  height:45px;
-  border:4px solid #0f0;
-  border-top:4px solid transparent;
-  border-radius:50%;
-  animation:spin 1s linear infinite;
-}
-
-@keyframes spin{
-  to{transform:rotate(360deg);}
-}
-</style>
-</head>
-
-<body>
-
-<!-- LOADING -->
-<div id="loading">
-  <div class="loader"></div>
-  <p>Loading VIP Tool...</p>
-</div>
-
-<!-- LOCK -->
-<div id="lockScreen">
-  <h3>🔒 VIP </h3>
-  <input id="keyInput" placeholder="Enter key...">
-  <button onclick="unlock()">UNLOCK</button>
-  <p id="lockStatus"></p>
-</div>
-
-<!-- APP -->
-<div id="app" style="display:none;">
-  <h2>⚡ TOUCH TOOL VIP</h2>
-
-  <div class="box">
-    <h3>Body</h3>
-    <button class="btn" onclick="toggle('smooth',this)">OFF</button>
+</style></head>
+<body><div id="lockScreen" style="position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;background:radial-gradient(circle at center, rgba(0,255,120,0.08), rgba(0,0,0,0.97));;display:flex;justify-content:center;align-items:center;z-index:9999;">
+  <div style="width:90%;max-width:380px;padding:30px;border-radius:24px;background:rgba(255,255,255,0.05);border:1px solid rgba(0,255,100,0.25);backdrop-filter:blur(12px);box-shadow:0 0 30px rgba(0,255,100,0.15);text-align:center;">
+    <h1 style="margin:0 0 10px;color:#66ff99;text-shadow:0 0 15px #00ff66, 0 0 30px #00ff66;">🔒 VIP ACCESS</h1>
+    <p style="color:#bbb;font-size:14px;">Nhập key để mở khóa hệ thống</p>
+    <input id="keyInput" placeholder="Enter VIP Key" style="width:100%;padding:14px;border:none;border-radius:14px;margin-top:15px;background:#111;color:#fff;box-sizing:border-box;">
+    <button onclick="unlockSystem()" style="margin-top:15px;width:100%;padding:14px;border:none;border-radius:14px;background:#00ff66;font-weight:bold;font-size:15px;">UNLOCK NOW</button>
+    <p id="lockStatus" style="margin-top:12px;color:#ff6666;"></p>
   </div>
-
-  <div class="box">
-    <h3>lock</h3>
-    <button class="btn" onclick="toggle('swipe',this)">OFF</button>
+</div><div id="mainApp" style="display:none;">
+<h2>⚡ TOUCH TOOL VIP</h2><div class="box">
+  <h3>Body Smooth</h3>
+  <button class="btn" onclick="toggleFeature('smooth',this)">OFF</button>
+</div><div class="box">
+  <h3>Lock Aim</h3>
+  <button class="btn" onclick="toggleFeature('lock',this)">OFF</button>
+</div><div class="box">
+  <h3>Độ Nhạy</h3>
+  <button class="btn" onclick="toggleFeature('accuracy',this)">OFF</button>
+</div><div class="box">
+  <h3>Bám Tâm</h3>
+  <button class="btn" onclick="toggleFeature('stick',this)">OFF</button>
+</div><div class="box">
+  <h3>Touch Boost</h3>
+  <button class="btn" onclick="toggleFeature('touch',this)">OFF</button>
+</div><div class="box">
+  <h3>Swipe Speed</h3>
+  <button class="btn" onclick="toggleFeature('swipeSpeed',this)">OFF</button>
+</div><div class="box">
+  <h3>Screen Optimize</h3>
+  <button class="btn" onclick="toggleFeature('screen',this)">OFF</button>
+</div><div class="box">
+  <h3>FPS Boost</h3>
+  <div class="fps-row">
+    <button class="fps-btn" onclick="setFPS(60)">60 FPS</button>
+    <button class="fps-btn" onclick="setFPS(90)">90 FPS</button>
+    <button class="fps-btn" onclick="setFPS(120)">120 FPS</button>
   </div>
-
-  <div class="box">
-    <h3>Nhạy</h3>
-    <button class="btn" onclick="toggle('accuracy',this)">OFF</button>
-  </div>
-  <script>
-  let lockHead = 90000000000;
-let lock = 100;
-let aimLock = 100;
-let screen = 100;
-let Claw = 100;
-let swipe right = 100;
-let swipe up = 100;
-let mind lock = 100;
-</script>
-  <div class="box">
-    <h3>Bám</h3>
-    <button class="btn" onclick="toggle('speed',this)">OFF</button>
-  </div>
-
-  <div class="box">
-    <h3>FPS </h3>
-    <button class="fps-btn" onclick="setFPS(60)">60</button>
-    <button class="fps-btn" onclick="setFPS(90)">90</button>
-    <button class="fps-btn" onclick="setFPS(120)">120</button>
-  </div>
-
-  <p id="status">Status: OFF</p>
-</div>
-
-<!-- SOUND -->
-<audio id="clickSound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
-<audio id="unlockSound" src="https://www.soundjay.com/buttons/sounds/button-09.mp3"></audio>
+</div><div class="box">
+  <h3>App Launcher</h3>
+  <button class="btn" onclick="runApp('Calculator')">Mở Calculator</button>
+  <button class="btn" onclick="runApp('Browser')" style="margin-top:10px;">Mở Browser</button>
+  <button class="btn" onclick="runApp('Settings')" style="margin-top:10px;">Mở Settings</button>
+  <button class="btn" onclick="runApp('Free Fire MAX')" style="margin-top:10px;">Mở FF MAX</button>
+</div><p id="status">Status: OFF</p><audio id="toggleSound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
 
 <script>
-let validKey="123";
-
-let state={
- smooth:true,
- swipe:true,
- accuracy:true,
- speed:true
+const config={
+  smooth:false,
+  lock:false,
+  accuracy:false,
+  stick:false,
+  touch:false,
+  swipeSpeed:false,
+  screen:false,
+  fps:60,
+  lockHead:9000,
+  aimLock:100,
+  swipeRight:100,
+  swipeUp:100,
+  touchBoost:'OFF',
+  screenMode:'NORMAL',
+  root:false
 };
 
-// SOUND
-function clickSound(){
-  let a=document.getElementById("clickSound");
-  a.currentTime=0;
-  a.play().catch(()=>{});
+function requestRootAccess(){
+  console.log('ROOT ACCESS ENABLED');
+  config.root = true;
 }
 
-function unlockSound(){
-  let a=document.getElementById("unlockSound");
-  a.currentTime=0;
-  a.play().catch(()=>{});
+function optimizeFeature(type){
+  requestRootAccess();
+  if(type==='smooth') config.lockHead=9500;
+  if(type==='lock') config.aimLock=120;
+  if(type==='accuracy') config.swipeUp=150;
+  if(type==='stick') config.swipeRight=150;
+  if(type==='touch') config.touchBoost='HIGH';
+  if(type==='swipeSpeed') config.swipeRight=200;
+  if(type==='screen') config.screenMode='1080P BOOST';
 }
 
-// LOADING
-setTimeout(()=>{
-  document.getElementById("loading").style.display="none";
-  document.getElementById("lockScreen").style.display="flex";
-},1500);
+function playToggleSound(){
+  const sound = document.getElementById('toggleSound');
+  sound.currentTime = 0;
+  sound.play().catch(()=>{});
+}
 
-// UNLOCK
-function unlock(){
-  let input=document.getElementById("keyInput").value;
+function toggleFeature(type,btn){
+  config[type]=!config[type];
+  playToggleSound();
 
-  if(input===validKey){
-    unlockSound();
-    document.getElementById("lockScreen").style.display="none";
-    document.getElementById("app").style.display="block";
+  if(config[type]){
+    btn.textContent='ON';
+    btn.classList.add('on');
   }else{
-    document.getElementById("lockStatus").innerText="❌ Sai key";
-    clickSound();
-  }
-}
-
-// TOGGLE
-function toggle(type,btn){
-  state[type]=!state[type];
-
-  if(state[type]){
-    btn.innerText="ON";
-    btn.classList.add("on");
-  }else{
-    btn.innerText="OFF";
-    btn.classList.remove("on");
+    btn.textContent='OFF';
+    btn.classList.remove('on');
   }
 
-  clickSound();
+  optimizeFeature(type);
   updateStatus();
-  LockHead();
-  Aimfor();
 }
 
-// FPS
-function setFPS(fps){
-  document.getElementById("status").innerText="FPS: "+fps;
-  clickSound();
-  LockHead();
-  LockHead = 9000;
+const validKey='123456';
+
+function unlockSystem(){
+  const input=document.getElementById('keyInput').value;
+  if(input===validKey){
+    document.getElementById('lockScreen').style.display='none';
+    document.getElementById('mainApp').style.display='block';
+  }else{
+    document.getElementById('lockStatus').innerText='❌ Key không đúng';
+  }
 }
 
-// STATUS
+function setFPS(value){
+  config.fps=value;
+  updateStatus();
+}
+
+function runApp(appName){
+  document.getElementById('status').innerText = `Đang chạy ứng dụng: ${appName}`;
+  console.log('Running app:', appName);
+}
+
 function updateStatus(){
-  document.getElementById("status").innerText=
-  "Smooth:"+state.smooth+
-  " | Swipe:"+state.swipe+
-  " | Accuracy:"+state.accuracy+
-  " | Speed:"+state.speed;
+  document.getElementById('status').innerText=
+    `Smooth: ${config.smooth} | Lock: ${config.lock} | Accuracy: ${config.accuracy} | Stick: ${config.stick} | Touch: ${config.touch} | Swipe: ${config.swipeSpeed} | Screen: ${config.screen} | FPS: ${config.fps} | ROOT: ${config.root}`;
 }
-
-swipe.LockHead();
-
-</script>
-
-<script>
-using System;
-
-// Define the Player class
-public class Player
-{
-    private float x; // Player's x-coordinate
-    private float y; // Player's y-coordinate
-
-    // Constructor
-    public Player(float x, float y)
-    {
-        this.x = x;
-        this.y = y;
-    }
-
-    // Method to get player's position
-    public Tuple<float, float> GetPosition()
-    {
-        return Tuple.Create(x, y);
-    }
-}
-
-// Define the Enemy class
-public class Enemy
-{
-    private float x; // Enemy's x-coordinate
-    private float y; // Enemy's y-coordinate
-
-    // Constructor
-    public Enemy(float x, float y)
-    {
-        this.x = x;
-        this.y = y;
-    }
-
-    // Method to get enemy's position
-    public Tuple<float, float> GetPosition()
-    {
-        return Tuple.Create(x, y);
-    }
-}
-
-// Define the Aimbot class
-public class Aimbot
-{
-    private float strength; // Strength of the aimbot (0 to 1)
-
-    // Constructor
-    public Aimbot(float strength)
-    {
-        this.strength = strength;
-    }
-
-    // Method to aim at the enemy with a given strength
-    public void AimAtEnemy(Player player, Enemy enemy)
-    {
-        // Get player's and enemy's positions
-        var (playerX, playerY) = player.GetPosition();
-        var (enemyX, enemyY) = enemy.GetPosition();
-
-        // Calculate the angle between player and enemy
-        float angle = (float)Math.Atan2(enemyY - playerY, enemyX - playerX);
-
-        // Adjust the aim with the strength
-        float adjustedAngle = angle + strength * (new Random().Next(101)) / 100.0f;
-
-        // Output the aimed angle
-        Console.WriteLine("Aim adjusted to angle: " + adjustedAngle);
-    }
-}
-
-public class Program
-{
-    public static void Main(string[] args)
-    {
-        // Create a player and an enemy
-        Player player = new Player(10.0f, 20.0f);
-        Enemy enemy = new Enemy(30.0f, 15.0f);
-
-        // Create an aimbot with 70% strength
-        Aimbot aimbot = new Aimbot(0.7f);
-
-        // Aim at the enemy with the aimbot
-        aimbot.AimAtEnemy(player, enemy);
-    }
-}
-</script>
-<script>
-    using System;
-
-public class SuperStickHead
-{
-    private bool stickHeadEnabled;
-    private double stickAccuracy;
-    private double stickDistanceThreshold;
-    private double headSpeedMultiplier;
-
-    public SuperStickHead()
-    {
-        stickHeadEnabled = false;
-        stickAccuracy = 0.95; // 95% stick accuracy for head
-        stickDistanceThreshold = 50; // Distance threshold to stick head to target
-        headSpeedMultiplier = 0.3; // Multiplier to reduce head movement speed when sticked
-    }
-
-    // Method to enable super stick head
-    public void EnableSuperStickHead()
-    {
-        stickHeadEnabled = true;
-        Console.WriteLine("Super stick head enabled. Head movement restricted to target.");
-    }
-
-    // Method to disable super stick head
-    public void DisableSuperStickHead()
-    {
-        stickHeadEnabled = false;
-        Console.WriteLine("Super stick head disabled. Normal head movement restored.");
-    }
-
-    // Method to simulate super stick head
-    public void StickHeadToTarget(int targetX, int targetY, int mouseX, int mouseY, out int adjustedMouseX, out int adjustedMouseY)
-    {
-        if (stickHeadEnabled)
-        {
-            // Calculate distance to target
-            double distance = Math.Sqrt(Math.Pow(targetX - mouseX, 2) + Math.Pow(targetY - mouseY, 2));
-
-            if (distance <= stickDistanceThreshold)
-            {
-                // Stick head to target
-                Console.WriteLine("Head stuck to target.");
-
-                // Simulate reduced head movement speed
-                adjustedMouseX = (int)(mouseX * headSpeedMultiplier);
-                adjustedMouseY = (int)(mouseY * headSpeedMultiplier);
-            }
-            else
-            {
-                adjustedMouseX = mouseX;
-                adjustedMouseY = mouseY;
-            }
-        }
-        else
-        {
-            adjustedMouseX = mouseX;
-            adjustedMouseY = mouseY;
-        }
-    }
-
-    // Method to set custom stick accuracy
-    public void SetStickAccuracy(double accuracy)
-    {
-        stickAccuracy = accuracy;
-        Console.WriteLine($"Stick accuracy set to {accuracy * 100}%.");
-    }
-
-    // Method to set custom stick distance threshold
-    public void SetStickDistanceThreshold(double threshold)
-    {
-        stickDistanceThreshold = threshold;
-        Console.WriteLine($"Stick distance threshold set to {threshold}.");
-    }
-
-    // Method to set custom head movement speed multiplier
-    public void SetHeadSpeedMultiplier(double multiplier)
-    {
-        headSpeedMultiplier = multiplier;
-        Console.WriteLine($"Head movement speed multiplier set to {multiplier}.");
-    }
-}
-
-class Program
-{
-    static void Main(string[] args)
-    {
-        SuperStickHead superStickHead = new SuperStickHead();
-        superStickHead.EnableSuperStickHead();
-
-        // Simulate mouse movement and target position
-        int mouseX = 100; // Example mouse X position
-        int mouseY = 150; // Example mouse Y position
-        int targetX = 120; // Example target X position
-        int targetY = 140; // Example target Y position
-
-        superStickHead.StickHeadToTarget(targetX, targetY, mouseX, mouseY, out int adjustedMouseX, out int adjustedMouseY);
-
-        Console.WriteLine($"Adjusted mouse position: ({adjustedMouseX}, {adjustedMouseY})");
-
-        // Set custom stick accuracy
-        superStickHead.SetStickAccuracy(0.98);
-
-        // Set custom stick distance threshold
-        superStickHead.SetStickDistanceThreshold(60);
-
-        // Set custom head movement speed multiplier
-        superStickHead.SetHeadSpeedMultiplier(0.2);
-
-        superStickHead.DisableSuperStickHead();
-    }
-}
-</script>
-<body>
-</html>
+</script></div>
+</body>
+  </html>
