@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>YANDEV ULTRA VIP</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Orbitron',sans-serif;
+}
+
+body{
+background:black;
+overflow:hidden;
+height:100vh;
+color:white;
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:0;
+}
+
+.loginBox{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:360px;
+padding:30px;
+background:#ffffff10;
+backdrop-filter:blur(20px);
+border-radius:25px;
+border:1px solid #00ffff55;
+box-shadow:0 0 30px #00ffff55;
+z-index:2;
+text-align:center;
+}
+
+.logo{
+font-size:35px;
+font-weight:900;
+color:#00ffff;
+margin-bottom:10px;
+text-shadow:0 0 20px #00ffff;
+}
+
+.desc{
+font-size:13px;
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:15px;
+border:none;
+outline:none;
+border-radius:15px;
+background:#000000aa;
+color:white;
+margin-bottom:15px;
+border:1px solid #00ffff55;
+}
+
+button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:15px;
+background:linear-gradient(90deg,#00ffff,#00aaff);
+font-weight:bold;
+cursor:pointer;
+margin-top:10px;
+transition:0.3s;
+color:white;
+}
+
+button:hover{
+transform:scale(1.05);
+box-shadow:0 0 20px #00ffff;
+}
+
+.result{
+margin-top:15px;
+min-height:20px;
+}
+
+#vipPanel{
+display:none;
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+overflow:auto;
+padding:20px;
+z-index:2;
+}
+
+.topbar{
+padding:20px;
+border-radius:20px;
+background:#ffffff10;
+border:1px solid #00ffff55;
+backdrop-filter:blur(15px);
+margin-bottom:20px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+.card{
+padding:20px;
+border-radius:20px;
+background:#ffffff10;
+border:1px solid #00ffff55;
+backdrop-filter:blur(15px);
+box-shadow:0 0 20px #00ffff22;
+}
+
+.card h2{
+color:#00ffff;
+margin-bottom:10px;
+font-size:18px;
+}
+
+.card p{
+font-size:13px;
+margin:5px 0;
+}
+
+.terminal{
+margin-top:20px;
+background:black;
+padding:15px;
+height:180px;
+overflow:auto;
+border-radius:15px;
+border:1px solid #00ff88;
+box-shadow:0 0 20px #00ff88;
+}
+
+.terminal p{
+color:#00ff88;
+font-size:12px;
+margin:4px 0;
+}
+
+.online{
+color:#00ff88;
+animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+0%{opacity:0.5;}
+50%{opacity:1;}
+100%{opacity:0.5;}
+}
+
+.qr{
+width:180px;
+margin-top:15px;
+border-radius:15px;
+}
+
+</style>
+</head>
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="loginBox" id="loginBox">
+
+<div class="logo">ULTRA KEY</div>
+
+<div class="desc">
+Hệ thống bảo mật VIP
+</div>
+
+<input type="password"
+id="keyInput"
+placeholder="Nhập key...">
+
+<button onclick="checkKey()">
+XÁC NHẬN KEY
+</button>
+
+<button onclick="generateKey()">
+TẠO KEY
+</button>
+
+<div class="result" id="result"></div>
+
+</div>
+
+<div id="vipPanel">
+
+<div class="topbar">
+
+<h1>YANDEV VIP PANEL</h1>
+
+<p class="online">
+SERVER ONLINE ●
+</p>
+
+<p id="battery">
+PIN: --%
+</p>
+
+</div>
+
+<div class="cards">
+
+<!-- IOS CONFIG -->
+
+<div class="card">
+
+<h2>IOS CONFIG</h2>
+
+<p>iCloud: CONNECTED</p>
+
+<p>Security: ENABLED</p>
+
+<button onclick="installVip()">
+TẢI CẤU HÌNH THẬT
+</button>
+
+<button onclick="downloadConfig()">
+DOWNLOAD PROFILE
+</button>
+
+<button onclick="installVPN()">
+CÀI VPN VIP
+</button>
+
+<img class="qr"
+src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=YANDEV.mobileconfig">
+
+</div>
+
+<!-- TOOLS -->
+
+<div class="card">
+
+<h2>TOOLS</h2>
+
+<button onclick="fakeHack()">
+RUN HACK
+</button>
+
+<button onclick="clearTerminal()">
+CLEAR TERMINAL
+</button>
+
+<button onclick="fullScreen()">
+FULLSCREEN
+</button>
+
+</div>
+
+<!-- SYSTEM -->
+
+<div class="card">
+
+<h2>SYSTEM</h2>
+
+<p>STATUS: ACTIVE</p>
+
+<p>VERSION: 9.0 ULTRA</p>
+
+<p>ENCRYPTION: AES-512</p>
+
+<p>DEVICE: MOBILE</p>
+
+<p>FPS: 60</p>
+
+</div>
+
+</div>
+
+<div class="terminal" id="terminal">
+
+<p>> CONNECTING SERVER...</p>
+<p>> ACCESS DATABASE...</p>
+<p>> USER VERIFIED...</p>
+<p>> SYSTEM ONLINE...</p>
+
+</div>
+
+</div>
+
+<script>
+
+/* MATRIX */
+
+const canvas =
+document.getElementById("matrix");
+
+const ctx =
+canvas.getContext("2d");
+
+canvas.width =
+window.innerWidth;
+
+canvas.height =
+window.innerHeight;
+
+const letters =
+"01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+const fontSize = 14;
+
+const columns =
+canvas.width/fontSize;
+
+const drops = [];
+
+for(let x=0;x<columns;x++){
+drops[x]=1;
+}
+
+function draw(){
+
+ctx.fillStyle =
+"rgba(0,0,0,0.05)";
+
+ctx.fillRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+ctx.fillStyle="#00ff88";
+
+ctx.font=
+fontSize+"px monospace";
+
+for(let i=0;i<drops.length;i++){
+
+const text =
+letters.charAt(
+Math.floor(
+Math.random()*letters.length
+)
+);
+
+ctx.fillText(
+text,
+i*fontSize,
+drops[i]*fontSize
+);
+
+if(
+drops[i]*fontSize >
+canvas.height &&
+Math.random()>0.975
+){
+drops[i]=0;
+}
+
+drops[i]++;
+
+}
+
+}
+
+setInterval(draw,33);
+
+/* KEY */
+
+const validKeys = [
+"YANDEVVIP",
+"ULTRA999",
+"TGMPRO",
+"VIP2026"
+];
+
+function checkKey(){
+
+const input =
+document
+.getElementById("keyInput")
+.value.trim();
+
+const result =
+document
+.getElementById("result");
+
+if(validKeys.includes(input)){
+
+result.innerHTML =
+"✔ KEY HỢP LỆ";
+
+document
+.getElementById("loginBox")
+.style.display="none";
+
+document
+.getElementById("vipPanel")
+.style.display="block";
+
+addTerminal("ACCESS GRANTED");
+addTerminal("VIP SYSTEM READY");
+
+}else{
+
+result.innerHTML =
+"✖ KEY KHÔNG HỢP LỆ";
+
+navigator.vibrate(300);
+
+}
+
+}
+
+/* KEY GENERATOR */
+
+function generateKey(){
+
+const chars =
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+let key="";
+
+for(let i=0;i<12;i++){
+
+key += chars.charAt(
+Math.floor(
+Math.random()*chars.length
+)
+);
+
+}
+
+navigator.clipboard.writeText(key);
+
+alert("KEY: "+key);
+
+}
+
+/* TERMINAL */
+
+function addTerminal(text){
+
+const terminal =
+document.getElementById("terminal");
+
+const p =
+document.createElement("p");
+
+p.innerHTML="> "+text;
+
+terminal.appendChild(p);
+
+terminal.scrollTop =
+terminal.scrollHeight;
+
+}
+
+function fakeHack(){
+
+addTerminal("BYPASS SECURITY...");
+addTerminal("CONNECTING API...");
+addTerminal("ACCESS CLOUD...");
+addTerminal("SYSTEM SUCCESS");
+
+}
+
+function clearTerminal(){
+
+document
+.getElementById("terminal")
+.innerHTML="";
+
+}
+
+/* FULLSCREEN */
+
+function fullScreen(){
+
+document.documentElement
+.requestFullscreen();
+
+}
+
+/* BATTERY */
+
+navigator.getBattery()
+.then(function(battery){
+
+function updateBattery(){
+
+document
+.getElementById("battery")
+.innerHTML =
+"PIN: " +
+Math.floor(
+battery.level*100
+)+"%";
+
+}
+
+updateBattery();
+
+battery.addEventListener(
+'levelchange',
+updateBattery
+);
+
+});
+
+/* INSTALL VIP */
+
+function installVip(){
+
+addTerminal(
+"PREPARING VIP PROFILE..."
+);
+
+setTimeout(()=>{
+
+downloadConfig();
+
+},2000);
+
+}
+
+/* DOWNLOAD CONFIG */
+
+function downloadConfig(){
+
+const configContent =
+`<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0">
+<dict>
+
+<key>PayloadDisplayName</key>
+<string>YANDEV ULTRA VIP</string>
+
+<key>PayloadIdentifier</key>
+<string>yandev.vip.profile</string>
+
+<key>PayloadUUID</key>
+<string>12345678-1234</string>
+
+<key>PayloadVersion</key>
+<integer>1</integer>
+
+<key>PayloadType</key>
+<string>Configuration</string>
+
+</dict>
+</plist>`;
+
+const blob = new Blob(
+[configContent],
+{
+type:
+'application/x-apple-aspen-config'
+}
+);
+
+const link =
+document.createElement('a');
+
+link.href =
+URL.createObjectURL(blob);
+
+link.download =
+'YANDEV.mobileconfig';
+
+document.body.appendChild(link);
+
+link.click();
+
+document.body.removeChild(link);
+
+addTerminal(
+"IOS PROFILE DOWNLOADED"
+);
+
+alert(
+"CONFIG VIP ĐÃ TẢI VỀ MÁY"
+);
+
+}
+
+/* VPN */
+
+function installVPN(){
+
+addTerminal(
+"CREATING VPN PROFILE..."
+);
+
+addTerminal(
+"CONNECTING VPN SERVER..."
+);
+
+setTimeout(()=>{
+
+const vpnConfig =
+`<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0">
+<dict>
+
+<key>PayloadDisplayName</key>
+<string>YANDEV VPN</string>
+
+<key>PayloadIdentifier</key>
+<string>yandev.vpn</string>
+
+<key>PayloadUUID</key>
+<string>99999999-8888</string>
+
+<key>PayloadVersion</key>
+<integer>1</integer>
+
+<key>PayloadType</key>
+<string>Configuration</string>
+
+</dict>
+</plist>`;
+
+const blob = new Blob(
+[vpnConfig],
+{
+type:
+'application/x-apple-aspen-config'
+}
+);
+
+const link =
+document.createElement('a');
+
+link.href =
+URL.createObjectURL(blob);
+
+link.download =
+'YANDEV-VPN.mobileconfig';
+
+document.body.appendChild(link);
+
+link.click();
+
+document.body.removeChild(link);
+
+addTerminal(
+"VPN PROFILE READY"
+);
+
+alert(
+"VPN CONFIG ĐÃ TẢI VỀ MÁY"
+);
+
+},2500);
+
+}
+
+/* ANTI */
+
+document.addEventListener(
+'contextmenu',
+e=>e.preventDefault()
+);
+
+</script>
+
+</body>
+  </html>
